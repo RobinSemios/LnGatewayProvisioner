@@ -1,0 +1,6 @@
+        option uri 'wss://A33U15NJRC6IG0.lns.lorawan.us-west-2.amazonaws.com'
+	option port '443'
+	option auth_mode 'tls-server-client'
+	option trust '/etc/station/server.trust'
+	option crt '/etc/station/client.crt'
+	option key '/etc/station/client.key'

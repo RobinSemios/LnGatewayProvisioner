@@ -1,0 +1,3 @@
+config network 'network'
+	option mode 'basic_station'
+	option log_level '5'

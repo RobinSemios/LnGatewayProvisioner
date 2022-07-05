@@ -1,0 +1,5 @@
+config quectel 'quectel'
+	option enable '1'
+	option profile '0'
+	option apn 'vflte.semios.com'
+
