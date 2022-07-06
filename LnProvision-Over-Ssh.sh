@@ -13,8 +13,6 @@ gtwy_ip=$1
 
 password=$SEMIOS_PROVISIONER_GWLN_PASSWORD
 port=$SEMIOS_PROVISIONER_GWLN_PORT
-echo "pass is $password"
-echo "port is $port"
 
 if [ ! -f Crendential/client.crt ]; then
     echo "The crendential file 'client.crt' must exist in directory. see README prerequisties!"
