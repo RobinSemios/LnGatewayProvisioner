@@ -9,10 +9,17 @@ echo "+------------------------------------------------------------+"
 echo "|                     Start provisioning                     |"
 echo "+------------------------------------------------------------+"
 
-gtwy_ip=$1
+gtwIp=$1
 
 password=$SEMIOS_PROVISIONER_GWLN_PASSWORD
 port=$SEMIOS_PROVISIONER_GWLN_PORT
+
+if [ ! -f LnMacList ]; then
+    echo "Please run (ln-ip-scan.sh ip-list) first!"
+    exit 1
+else
+    
+gatewayMac=$(cat LnMacList | grep $gtwIP | awk -F " " '{print $2}') 
 
 if [ ! -f Crendential/client.crt ]; then
     echo "The crendential file 'client.crt' must exist in directory. see README prerequisties!"
@@ -37,16 +44,16 @@ rm LnConfig.tar.gz
 tar -czvf Crendential.tar.gz Crendential
 tar -czvf LnConfig.tar.gz LnConfig
 
-echo "Logging into the LN gateway @$gtwy_ip"
-ssh-keygen -f ~/.ssh/known_hosts -R "$gtwy_ip"
-sshpass -p $password ssh -p $port -q -o ConnectTimeout=15 root@$gtwy_ip -oStrictHostKeyChecking=accept-new exit
+echo "Logging into the LN gateway @$gtwIp"
+ssh-keygen -f ~/.ssh/known_hosts -R "$gtwIp"
+sshpass -p $password ssh -p $port -q -o ConnectTimeout=15 root@$gtwIp -oStrictHostKeyChecking=accept-new exit
 if [ ! $? -eq 0 ]; then
 
-  echo "Unable to connect over ssh to gateway @ IP: $gtwy_ip"
+  echo "Unable to connect over ssh to gateway @ IP: $gtwIp"
   exit
 
 fi
 
-sshpass -p $password scp -P $port Crendential.tar.gz root@$gtwy_ip:/tmp
-sshpass -p $password scp -P $port LnConfig.tar.gz root@$gtwy_ip:/tmp
-sshpass -p $password scp -P $port LN-Remote-Update.sh root@$gtwy_ip:/tmp
+sshpass -p $password scp -P $port Crendential.tar.gz root@$gtwIp:/tmp
+sshpass -p $password scp -P $port LnConfig.tar.gz root@$gtwIp:/tmp
+sshpass -p $password scp -P $port LN-Remote-Update.sh root@$gtwIp:/tmp

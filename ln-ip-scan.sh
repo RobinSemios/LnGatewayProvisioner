@@ -11,11 +11,11 @@
 #
 ##########################################################################
 
-ip_list=""
+ipList=""
 
 if [ $# -ne 0 ]; then
 
-    ip_list=$1
+    ipList=$1
 
 fi
 
@@ -27,7 +27,9 @@ echo "Found Ubuntu $version"
 
 # obatin IPs for MAC address begin with AC:1F for RAK LN gateway mac standard 
 ips=$(sudo arp-scan "192.168.1.0/24" | grep "ac:1f" | awk -F " " '{print $1}')
-
+ipMacInfo=$(sudo arp-scan "192.168.1.0/24" | grep "ac:1f")
+printf "%s\n" "${ipMacInfo[@]}" > LnMacList
+sed -e 's/:/FFE/3' -e 's/://g' -i LnMacList
 echo "Subnet: $subnet"
 echo "Found LN gateway Ip address:"
 
@@ -37,13 +39,12 @@ if [ -z "$ips" ]; then
 
 else
 
-    if [[ "$ip_list" = "" ]]; then
+    if [[ "$ipList" = "" ]]; then
 
         printf "%s\n" "${ips[@]}"
-
     else
 
-        printf "%s\n" "${ips[@]}" > $ip_list
+        printf "%s\n" "${ips[@]}" > $ipList
 
     fi
 
